@@ -31,7 +31,7 @@ app.secret_key = "I am cool" # set a key for user authentication
 def home():
     return render_template("welcome.html")
 
-# Route for handling the login page logic
+# Route for handling the general login page logic
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -45,6 +45,20 @@ def login():
             return redirect(url_for('user'))
     return render_template('login.html', error=error)
 
+# Route for handling the employee login page logic
+@app.route('/emplogin', methods=['GET', 'POST'])
+def emplogin():
+    error = None
+    if request.method == 'POST':
+        erflag = pw.writeemp(request.form['username'], request.form['password'])
+        if erflag == "error":
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            session['logged_in'] = True
+            # flash('You were just logged in!')
+            return redirect(url_for('employeeportal'))
+    return render_template('employeelogin.html', error=error)
+
 @app.route('/logout')
 def logout():
     session.pop('logged_in',None)
@@ -54,6 +68,10 @@ def logout():
 @app.route('/user')
 def user():
     return render_template("user.html")
+
+@app.route('/employeeportal')
+def employeeportal():
+    return render_template("employeeportal.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
