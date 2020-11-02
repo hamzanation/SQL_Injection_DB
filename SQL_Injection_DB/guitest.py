@@ -4,8 +4,8 @@ from functools import partial
 
 # connect to the database using pyodbc
 conn = pyodbc.connect('Driver={SQL Server};' # I am using SQL Server Express
-                      'Server=RAYAN-PC\SQLEXPRESS;' # Connecting on my home device
-                      'Database=CompanyABC;' # This is the name of the database I created
+                      'Server=DESKTOP-G1UAJBM\SQLEXPRESS;' # Connecting on my home device
+                      'Database=4471_Project;' # This is the name of the database I created
                       'Trusted_Connection=yes;')
 
 # establish a cursor to execute queries
@@ -45,20 +45,20 @@ def validateLogin(username, password):
 
 
 #username label and text entry box
-usernameLabel = Label(tkWindow, text="User Name").grid(row=0, column=0)
+Label(tkWindow, text="User Name").grid(row=0, column=0)
 username = StringVar()
-usernameEntry = Entry(tkWindow, textvariable=username).grid(row=0, column=1)
+Entry(tkWindow, textvariable=username).grid(row=0, column=1)
 
 #password label and password entry box
-passwordLabel = Label(tkWindow,text="Password").grid(row=1, column=0)
+Label(tkWindow,text="Password").grid(row=1, column=0)
 password = StringVar()
-passwordEntry = Entry(tkWindow, textvariable=password, show='*').grid(row=1, column=1)
+Entry(tkWindow, textvariable=password, show='*').grid(row=1, column=1)
 
 # check the credentials
 validateLogin = partial(validateLogin, username, password)
 
 #login button
-loginButton = Button(tkWindow, text="Login", command=validateLogin).grid(row=4, column=0)
+Button(tkWindow, text="Login", command=validateLogin).grid(row=4, column=0)
 
 tkWindow.mainloop()
 """

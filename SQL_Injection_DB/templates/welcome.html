@@ -1,19 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Welcome</title>
+    <title>Login Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">
   </head>
   <body>
-    <div class="container">
-      <h1>Welcome</h1>
-      <br>
-      <p>Click <a href="/login">here</a> to go login.</p>
-      <p>Click <a href="/emplogin">here</a> to login as an employee.</p>
-      {% for message in get_flashed_messages() %}
-        {{ message }}
-      {% endfor %}
+    <h1>Welcome! Please select your login option.</h1>
+    <br>
+    <p><a href="/login">User</a></p>
+    <p><a href="/emplogin">Employee</a></p>
+    {% for message in get_flashed_messages() %}
+      {{ message }}
+    {% endfor %}
+    
+    <div class="grid-container">
+      <div class = "grid-item grid-item-1">
+        <h4>Lorem ipsum dolor sit amet.</h4>
+      </div>
+      <div class = "grid-item grid-item-2">
+        <h4>2</h4>
+      </div>
+      <div class = "grid-item grid-item-3">
+        <h4>3</h4>
+      </div>
+      <div class = "grid-item grid-item-1">
+        <h4>4</h4>
+      </div>
+      <div class = "grid-item grid-item-2">
+        <h4>5</h4>
+      </div>
+      <div class = "grid-item grid-item-3">
+        <h4>6</h4>
+      </div>
     </div>
   </body>
 </html>
