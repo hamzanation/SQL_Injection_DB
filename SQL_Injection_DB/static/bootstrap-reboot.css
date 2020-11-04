@@ -11,17 +11,23 @@
   box-sizing: border-box;
 }
 
-.grid-container {
-  margin-left: 500px;
-  margin-right: 500px;
-  margin-top: 100px;
+.login-grid-container {
+  margin-left: 650px;
+  margin-right: 675px;
   display: grid;
-  grid-template-columns: 200px 400px;
-  background-color: aqua;
+  grid-template-columns: 300px 300px;
+  column-gap: 20px;
+}
+
+.login-grid-item {
+  font: x-large;
+  /* background-color: aqua; */
+  border: #212529;
 }
 
 a {
-  color: blueviolet;
+  font-size: x-large;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 html {
@@ -138,7 +144,7 @@ sup {
 }
 
 a {
-  color: #007bff;
+  color: #9ec9f7;
   text-decoration: none;
   background-color: transparent;
 }

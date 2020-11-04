@@ -5,34 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">
   </head>
+
+  <header>
+    <image src="{{ url_for('static', filename='Website Icons.png')}}">
+  </header>
+
   <body>
-    <h1>Welcome! Please select your login option.</h1>
+    <h1>Welcome! Please select your login option:</h1>
     <br>
-    <p><a href="/login">User</a></p>
-    <p><a href="/emplogin">Employee</a></p>
     {% for message in get_flashed_messages() %}
       {{ message }}
     {% endfor %}
-    
-    <div class="grid-container">
-      <div class = "grid-item grid-item-1">
-        <h4>Lorem ipsum dolor sit amet.</h4>
+
+    <div class="login-grid-container">
+      <div class = "login-grid-item">
+        <p><a href="/login">User</a></p>
       </div>
-      <div class = "grid-item grid-item-2">
-        <h4>2</h4>
-      </div>
-      <div class = "grid-item grid-item-3">
-        <h4>3</h4>
-      </div>
-      <div class = "grid-item grid-item-1">
-        <h4>4</h4>
-      </div>
-      <div class = "grid-item grid-item-2">
-        <h4>5</h4>
-      </div>
-      <div class = "grid-item grid-item-3">
-        <h4>6</h4>
+      <div class = "login-grid-item">
+        <p><a href="/emplogin">Employee</a></p>
       </div>
     </div>
+
+    <h1>View our vast selection of products:</h1>
+    <br>
+
+    <div class="products-grid-container">
+      <div class = "products-grid-item">
+        <p><a href="/login">Products</a></p>
+      </div>
+    </div>
+
+    <h1>Interested in joining us? View our teams:</h1>
+    <br>
+
+    <div class="department-grid-container">
+      <div class = "department-grid-item">
+        <p><a href="/login">Departments</a></p>
+      </div>
+    </div>    
+
   </body>
 </html>
