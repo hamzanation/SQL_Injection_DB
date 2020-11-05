@@ -22,6 +22,10 @@ user_header = ["id","ssn","first_name","last_name","username",'password',"email"
 emp_header = ["Employee ID","First name","Last name", "username","position","salary","department number","department name",
               "supervisor"]
 
+prod_header = []
+
+depart_header = []
+
 
 def writeuser(username, password):
     cursor.execute('SELECT * FROM Users WHERE username=\'' + username +
@@ -99,4 +103,70 @@ def writeemp(username, password):
         return 0
     return "error"
 
+def writeprod(product):
+    cursor.execute('SELECT * FROM Products WHERE productID=\'' + product +'\';')
+    if len(list(cursor)) > 0:
+        # start writing the file
+        file = open('templates/products.html','w+')
+        file.write('<!DOCTYPE html>\n<html>\n')
+        cursor.execute('SELECT * FROM Products WHERE productID=\'' + product +'\';')
+        name = list(cursor)[0][2]
+        file.write('<head>\n<title>'+name + '\'s page'+'</title>\n')
+        file.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
+        file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
+        file.write('<body>\n')
+        file.write('<h1> Welcome '+ name+'</h1>\n<br>\n')
+        file.write('<p>Click <a href="logout">here</a> to go log out.</p>\n')
+        file.write('<p>')
+        file.write('<table style=\"width:100%\">\n')
+        # write the table header
+        file.write('<tr>\n')
+        for heading in prod_header:
+            file.write('\t<th>'+heading+'</th>\n')
+        file.write('</tr>\n')
+        cursor.execute('SELECT * FROM Products WHERE productID=\'' + product +'\';')
+        for row in cursor:
+            file.write('<tr>\n')
+            for item in row:
+                file.write('<td>'+str(item)+'</td>\n')
+            file.write('</tr>\n')
+        file.write('</table>\n')
+        file.write('</p>\n')
+        file.write('</body>\n')
+        file.write('</html>\n')
+        return 0
+    return "error"
 
+def writedepart(department):
+    cursor.execute('SELECT * FROM Department WHERE Name=\'' + department + '\';')
+    if len(list(cursor)) > 0:
+        # start writing the file
+        file = open('templates/department.html','w+')
+        file.write('<!DOCTYPE html>\n<html>\n')
+        cursor.execute('SELECT * FROM Department WHERE Name=\'' + department + '\';')
+        name = list(cursor)[0][2]
+        file.write('<head>\n<title>'+name + '\'s page'+'</title>\n')
+        file.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
+        file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
+        file.write('<body>\n')
+        file.write('<h1> Welcome '+ name+'</h1>\n<br>\n')
+        file.write('<p>Click <a href="logout">here</a> to go log out.</p>\n')
+        file.write('<p>')
+        file.write('<table style=\"width:100%\">\n')
+        # write the table header
+        file.write('<tr>\n')
+        for heading in depart_header:
+            file.write('\t<th>'+heading+'</th>\n')
+        file.write('</tr>\n')
+        cursor.execute('SELECT * FROM Department WHERE Name=\'' + department + '\';')
+        for row in cursor:
+            file.write('<tr>\n')
+            for item in row:
+                file.write('<td>'+str(item)+'</td>\n')
+            file.write('</tr>\n')
+        file.write('</table>\n')
+        file.write('</p>\n')
+        file.write('</body>\n')
+        file.write('</html>\n')
+        return 0
+    return "error"

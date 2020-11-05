@@ -59,6 +59,34 @@ def emplogin():
             return redirect(url_for('employeeportal'))
     return render_template('employeelogin.html', error=error)
 
+# Route for handling the product page logic
+@app.route('/products', methods=['GET', 'POST'])
+def products():
+    error = None
+    if request.method == 'POST':
+        erflag = pw.writeprod(request.form['product'])
+        if erflag == "error":
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            session['logged_in'] = True
+            # flash('You were just logged in!')
+            return redirect(url_for('products'))
+    return render_template('productsSearch.html', error=error)
+
+# Route for handling the department page logic
+@app.route('/departments', methods=['GET', 'POST'])
+def departments():
+    error = None
+    if request.method == 'POST':
+        erflag = pw.writedepart(request.form['department'])
+        if erflag == "error":
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            session['logged_in'] = True
+            # flash('You were just logged in!')
+            return redirect(url_for('departments'))
+    return render_template('departmentsSearch.html', error=error)
+
 @app.route('/logout')
 def logout():
     session.pop('logged_in',None)
@@ -72,6 +100,14 @@ def user():
 @app.route('/employeeportal')
 def employeeportal():
     return render_template("employeeportal.html")
+
+@app.route('/products')
+def product():
+    return render_template("products.html")
+
+@app.route('/departments')
+def department():
+    return render_template("departments.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
