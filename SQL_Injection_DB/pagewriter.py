@@ -141,7 +141,7 @@ def writedepart(department):
     cursor.execute('SELECT * FROM Department WHERE Name=\'' + department + '\';')
     if len(list(cursor)) > 0:
         # start writing the file
-        file = open('templates/department.html','w+')
+        file = open('templates/departments.html','w+')
         file.write('<!DOCTYPE html>\n<html>\n')
         cursor.execute('SELECT * FROM Department WHERE Name=\'' + department + '\';')
         name = list(cursor)[0][2]
