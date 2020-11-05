@@ -70,7 +70,7 @@ def products():
         else:
             session['logged_in'] = True
             # flash('You were just logged in!')
-            return redirect(url_for('products'))
+            return redirect(url_for('product'))
     return render_template('productsSearch.html', error=error)
 
 # Route for handling the department page logic
@@ -84,7 +84,7 @@ def departments():
         else:
             session['logged_in'] = True
             # flash('You were just logged in!')
-            return redirect(url_for('departments'))
+            return redirect(url_for('department'))
     return render_template('departmentsSearch.html', error=error)
 
 @app.route('/logout')
