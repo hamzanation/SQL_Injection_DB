@@ -8,8 +8,8 @@ import pyodbc
 
 # connect to the database using pyodbc
 conn = pyodbc.connect('Driver={SQL Server};' # I am using SQL Server Express
-                      'Server=DESKTOP-G1UAJBM\SQLEXPRESS;' # Connecting on my home device
-                      'Database=4471_Project;' # This is the name of the database I created
+                      'Server=RAYAN-PC\SQLEXPRESS;' # Connecting on my home device
+                      'Database=CompanyABC;' # This is the name of the database I created
                       'Trusted_Connection=yes;')
 
 # establish a cursor to execute queries
@@ -104,12 +104,12 @@ def writeemp(username, password):
     return "error"
 
 def writeprod(product):
-    cursor.execute('SELECT * FROM Products WHERE productID=\'' + product +'\';')
+    cursor.execute('SELECT * FROM Products WHERE productID=' + product +';')
     if len(list(cursor)) > 0:
         # start writing the file
         file = open('templates/products.html','w+')
         file.write('<!DOCTYPE html>\n<html>\n')
-        cursor.execute('SELECT * FROM Products WHERE productID=\'' + product +'\';')
+        cursor.execute('SELECT * FROM Products WHERE productID=' + product +';')
         name = list(cursor)[0][2]
         file.write('<head>\n<title>'+name + '\'s page'+'</title>\n')
         file.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
@@ -124,7 +124,7 @@ def writeprod(product):
         for heading in prod_header:
             file.write('\t<th>'+heading+'</th>\n')
         file.write('</tr>\n')
-        cursor.execute('SELECT * FROM Products WHERE productID=\'' + product +'\';')
+        cursor.execute('SELECT * FROM Products WHERE productID=' + product +';')
         for row in cursor:
             file.write('<tr>\n')
             for item in row:

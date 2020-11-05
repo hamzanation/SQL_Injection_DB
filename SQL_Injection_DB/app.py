@@ -14,8 +14,8 @@ from flask import Flask, render_template, redirect, url_for, request, session, f
 
 # connect to the database using pyodbc
 conn = pyodbc.connect('Driver={SQL Server};' # I am using SQL Server Express
-                      'Server=DESKTOP-G1UAJBM\SQLEXPRESS;' # Connecting on my home device
-                      'Database=4471_Project;' # This is the name of the database I created
+                      'Server=RAYAN-PC\SQLEXPRESS;' # Connecting on my home device
+                      'Database=CompanyABC;' # This is the name of the database I created
                       'Trusted_Connection=yes;')
 
 # establish a cursor to execute queries
@@ -70,7 +70,7 @@ def products():
         else:
             session['logged_in'] = True
             # flash('You were just logged in!')
-            return redirect(url_for('products'))
+            return redirect(url_for('product'))
     return render_template('productsSearch.html', error=error)
 
 # Route for handling the department page logic
@@ -84,7 +84,7 @@ def departments():
         else:
             session['logged_in'] = True
             # flash('You were just logged in!')
-            return redirect(url_for('departments'))
+            return redirect(url_for('department'))
     return render_template('departmentsSearch.html', error=error)
 
 @app.route('/logout')
@@ -101,11 +101,11 @@ def user():
 def employeeportal():
     return render_template("employeeportal.html")
 
-@app.route('/products')
+@app.route('/product')
 def product():
     return render_template("products.html")
 
-@app.route('/departments')
+@app.route('/department')
 def department():
     return render_template("departments.html")
 
