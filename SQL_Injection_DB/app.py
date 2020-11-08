@@ -1,6 +1,6 @@
 """
 Filename: app.py
-Author(s): Rayan Hamza
+Author(s): Rayan Hamza, Abhishek Salandri
 Purpose: create the application that the user can interact with
 
 *This code is inspired by the Discover Flask series on the realpython website.
@@ -10,16 +10,6 @@ Purpose: create the application that the user can interact with
 import pyodbc
 import pagewriter as pw
 from flask import Flask, render_template, redirect, url_for, request, session, flash
-
-
-# connect to the database using pyodbc
-conn = pyodbc.connect('Driver={SQL Server};' # I am using SQL Server Express
-                      'Server=RAYAN-PC\SQLEXPRESS;' # Connecting on my home device
-                      'Database=CompanyABC;' # This is the name of the database I created
-                      'Trusted_Connection=yes;')
-
-# establish a cursor to execute queries
-cursor = conn.cursor()
 
 # create the application
 app = Flask(__name__)
@@ -89,6 +79,7 @@ def departments():
 
 @app.route('/logout')
 def logout():
+    pw.clearuser()
     session.pop('logged_in',None)
     flash('You were just logged out!')
     return redirect(url_for('home'))
@@ -108,6 +99,11 @@ def product():
 @app.route('/department')
 def department():
     return render_template("departments.html")
+
+@app.route('/transaction')
+def transaction():
+    pw.writetrans()
+    return render_template("transactions.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
