@@ -14,8 +14,8 @@ from flask import Flask, render_template, redirect, url_for, request, session, f
 
 # connect to the database using pyodbc
 conn = pyodbc.connect('Driver={SQL Server};' # I am using SQL Server Express
-                      'Server=RAYAN-PC\SQLEXPRESS;' # Connecting on my home device
-                      'Database=CompanyABC;' # This is the name of the database I created
+                      'Server=DESKTOP-G1UAJBM\SQLEXPRESS;' # Connecting on my home device
+                      'Database=4471_Project;' # This is the name of the database I created
                       'Trusted_Connection=yes;')
 
 # establish a cursor to execute queries
