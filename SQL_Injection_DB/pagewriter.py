@@ -8,8 +8,8 @@ import pyodbc
 
 # connect to the database using pyodbc
 conn = pyodbc.connect('Driver={SQL Server};' # I am using SQL Server Express
-                      'Server=DESKTOP-G1UAJBM\SQLEXPRESS;' # Connecting on my home device
-                      'Database=4471_Project;' # This is the name of the database I created
+                      'Server=RAYAN-PC\SQLEXPRESS;' # Connecting on my home device
+                      'Database=CompanyABC;' # This is the name of the database I created
                       'Trusted_Connection=yes;')
 
 # establish a cursor to execute queries
@@ -96,11 +96,10 @@ def writeemp(username, password):
             for item in row:
                 file.write('<td>' + str(item) + '</td>\n')
             file.write('</tr>\n')
-            file.write('</table>\n')
-            file.write('</p>\n')
-            file.write('</body>\n')
-            file.write('</html>\n')
-            return 0
+        file.write('</table>\n')
+        file.write('</p>\n')
+        file.write('</body>\n')
+        file.write('</html>\n')
         return 0
     return "error"
 
@@ -131,11 +130,10 @@ def writeprod(product):
             for item in row:
                 file.write('<td>'+str(item)+'</td>\n')
             file.write('</tr>\n')
-            file.write('</table>\n')
-            file.write('</p>\n')
-            file.write('</body>\n')
-            file.write('</html>\n')
-            return 0
+        file.write('</table>\n')
+        file.write('</p>\n')
+        file.write('</body>\n')
+        file.write('</html>\n')
         return 0
     return "error"
 
@@ -167,10 +165,8 @@ def writedepart(department):
             for item in row:
                 file.write('<td>'+str(item)+'</td>\n')
             file.write('</tr>\n')
-            file.write('</table>\n')
-            file.write('</p>\n')
-            file.write('</body>\n')
-            file.write('</html>\n')
-            return 0
+        file.write('</table>\n')
+        file.write('</p>\n')
+        file.write('</body>\n')
         return 0
     return "error"
