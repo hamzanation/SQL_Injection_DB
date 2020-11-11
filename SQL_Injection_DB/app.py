@@ -7,7 +7,6 @@ Purpose: create the application that the user can interact with
 - the tutorials are hosted by Michael Herman, and are as of 2014
 """
 
-import pyodbc
 import pagewriter as pw
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 
@@ -104,6 +103,11 @@ def department():
 def transaction():
     pw.writetrans()
     return render_template("transactions.html")
+
+@app.route('/supplier')
+def supplier():
+    pw.writesup()
+    return render_template("suppliers.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

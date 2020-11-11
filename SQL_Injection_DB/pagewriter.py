@@ -28,6 +28,8 @@ depart_header = ["Department Number", "Name", "Supervisor Name"]
 
 trans_header = ["transaction_ID","Transaction No.","Credit Card No.","Amount","ProductID","Product"]
 
+supp_header = ["ID","Location","Supplier","Supplier ID","Category","ProductID"]
+
 #this is how we will track client information
 currentuser = None
 
@@ -110,16 +112,15 @@ def writeemp(username, password):
         file = open('templates/employeeportal.html', 'w+')
         file.write('<!DOCTYPE html>\n<html>\n')
         cursor.execute(empqry)
-        name = list(cursor)[0][1] # should be first name
-        currentuser = list(cursor)[0][3]
+        qrylst = list(cursor).copy()
+        name = qrylst[0][1] # should be first name
+        currentuser = qrylst[0][3]
         file.write('<head>\n<title>' + name + '\'s Portal' + '</title>\n')
         file.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
         file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
         file.write('<body>\n')
         file.write('<h1> Welcome ' + name + '</h1>\n<br>\n')
-        #TODO: give an option for employees to go to an additional page
-
-        # file.write('<p><a href="transaction">view transactions</a></p>\n')
+        file.write('<p><a href="supplier">view suppliers</a></p>\n')
         file.write('<p>Click <a href="logout">here</a> to go log out.</p>\n')
         file.write('<p>')
         file.write('<table style=\"width:100%\">\n')
@@ -261,5 +262,47 @@ def writetrans():
         file.write('</body>\n')
         return 0
     return "error"
+
+def writesup():
+    """
+        Writes the suppliers page.
+        :return: error for errors or 0
+        """
+    global currentuser
+    theqry = ("SELECT s.id,s.location,s.supplier_name,s.supplierID,p.category,p.productID "
+               "FROM Supplier s Join Products p ON s.supplierID = p.supplierID;")
+    cursor.execute(theqry)
+    if len(list(cursor)) > 0 or uservalid:
+        # start writing the file
+        file = open('templates/suppliers.html', 'w+', encoding="utf-8")
+        file.write('<!DOCTYPE html>\n<html>\n')
+        cursor.execute(theqry)
+        file.write('<head>\n<title>Suppliers</title>\n')
+        file.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
+        file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
+        file.write('<body>\n')
+        file.write('<h1> Suppliers of Products  </h1>\n<br>\n')
+        file.write('<p><a href="employeeportal">back to portal</a></p>\n')
+        file.write('<p>Click <a href="logout">here</a> to return to home page.</p>\n')
+        file.write('<p>')
+        file.write('<table style=\"width:100%\">\n')
+        # write the table header
+        file.write('<tr>\n')
+        for heading in supp_header:
+            file.write('\t<th>' + heading + '</th>\n')
+        file.write('</tr>\n')
+        cursor.execute(theqry)
+
+        for row in cursor:
+            file.write('<tr>\n')
+            for item in row:
+                file.write('<td>' + str(item) + '</td>\n')
+            file.write('</tr>\n')
+        file.write('</table>\n')
+        file.write('</p>\n')
+        file.write('</body>\n')
+        return 0
+    return "error"
+
 
 #TODO: post additional query pages
