@@ -304,5 +304,20 @@ def writesup():
         return 0
     return "error"
 
+"""
+Dylan's Queries #####################################################
+"""
+
+updateusers = "UPDATE USERS SET address = '%s', state='%s',city='%s',zipcode='%s' WHERE ssn=%d;"
+
+updateTrans = "UPDATE Transactions SET amount = $%.2f WHERE id=%d;"
+
+updateuserinfo = "UPDATE Users SET username = '%s', password = '%s' WHERE username = %s;"
+
+updateSalary = "UPDATE Employees SET salary = $%.2f WHERE id = %s;"
+
+deleteUser = "DELETE FROM Users WHERE username = %s"
+
+deleteTrans = "DELETE FROM Transactions WHERE id = %d"
 
 #TODO: post additional query pages

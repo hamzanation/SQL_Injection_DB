@@ -76,6 +76,7 @@ def departments():
             return redirect(url_for('department'))
     return render_template('departmentsSearch.html', error=error)
 
+# finish the user's session
 @app.route('/logout')
 def logout():
     pw.clearuser()
@@ -83,10 +84,12 @@ def logout():
     flash('You were just logged out!')
     return redirect(url_for('home'))
 
+# The user's personal page
 @app.route('/user')
 def user():
     return render_template("user.html")
 
+# The employee's portal page
 @app.route('/employeeportal')
 def employeeportal():
     return render_template("employeeportal.html")
