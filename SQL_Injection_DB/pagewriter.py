@@ -69,6 +69,7 @@ def writeuser(username, password):
         file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
         file.write('<body>\n')
         file.write('<h1> Welcome '+ name+'</h1>\n<br>\n')
+        file.write('<p><a href="store">buy a product</a></p>\n')
         file.write('<p><a href="transaction">view transactions</a></p>\n')
         file.write('<p>Click <a href="logout">here</a> to go log out.</p>\n')
         file.write('<p>')
@@ -227,6 +228,7 @@ def writetrans():
     :return: error for errors or 0
     """
     global currentuser
+    assert not (currentuser == None)
     transqry = ("SELECT t.*, p.category from Transactions t join Users u on u.creditcard_no = t.creditCardNo "
                 "join Products p on t.productID = p.productID "
                 "where u.username =\'" + currentuser + "\';")
@@ -308,7 +310,7 @@ def writesup():
 Dylan's Queries #####################################################
 """
 
-updateusers = "UPDATE USERS SET address = '%s', state='%s',city='%s',zipcode='%s' WHERE ssn=%d;"
+updateuserloc = "UPDATE USERS SET address = '%s', state='%s',city='%s',zipcode='%s' WHERE username=%s;"
 
 updateTrans = "UPDATE Transactions SET amount = $%.2f WHERE id=%d;"
 
@@ -319,5 +321,131 @@ updateSalary = "UPDATE Employees SET salary = $%.2f WHERE id = %s;"
 deleteUser = "DELETE FROM Users WHERE username = %s"
 
 deleteTrans = "DELETE FROM Transactions WHERE id = %d"
+
+"""
+These are the functions to execute the queries
+"""
+def updateloc(address, state, city, zip):
+    global currentuser
+    query = updateuserloc % (address,state,city,zip,currentuser)
+    cursor.execute(query)
+
+def updateTrans(amount, id):
+    cursor.execute(updateTrans % (float(amount), int(id)))
+
+def updateusername(newusername, newpass):
+    global currentuser
+    # first, we must check for uniqueness
+    checkqry = "SELECT username FROM Users"
+    cursor.execute(checkqry)
+    userlist = []
+    for row in cursor:
+        userlist.append(row[0])
+    if newusername in userlist:
+        return "error"
+    cursor.execute(updateuserinfo % (newusername,newpass,currentuser))
+    # update the current user variable as well
+    currentuser = newusername
+
+def updatesalary(amount, id):
+    cursor.execute(updateSalary % (float(amount), int(id)))
+
+def deleteuser(usrnm):
+    cursor.execute(deleteUser % (usrnm))
+
+def deletetransaction(id):
+    cursor.execute(deleteTrans % (id))
+"""
+Back to writing pages #################################################
+"""
+def addtransaction(product_id, amount):
+    """
+    Adds the new transaction done by the user
+    :param product_id: the product they want to buy
+    :param amount: the amount they will spend
+    :return:
+    """
+    global currentuser
+    global conn
+    assert not (currentuser == None)
+    def isfloat(value):
+        try:
+            float(value)
+            return True
+        except ValueError:
+            return False
+
+    query = "INSERT INTO Transactions VALUES(%d,%d,%s,$%.2f,%d);"
+    if (not isfloat(amount)) or float(amount) < 500:
+        return "error2"
+    cursor.execute("SELECT productID from Products;")
+    productlist = []
+    for row in cursor:
+        productlist.append(row[0])
+    if float(product_id) not in productlist:
+        return "error3"
+    cursor.execute("SELECT MAX(id) FROM Transactions;")
+    last_id = list(cursor)[0][0]
+    cursor.execute("SELECT MAX(transactionNo) FROM Transactions;")
+    last_trans = list(cursor)[0][0]
+    cursor.execute("SELECT creditcard_no FROM Users WHERE username = \'"+currentuser+"\';")
+    creditcard = list(cursor)[0][0]
+    # execute the query and commit it to the db
+    cursor.execute(query % (int(last_id)+1,int(last_trans)+1,creditcard,float(amount),int(float(product_id))))
+    conn.commit()
+    return 0
+
+
+def writestorepage():
+    """
+        Writes the store page.
+        :return: error for errors or 0
+        """
+    global currentuser
+    theqry = "SELECT * FROM Products"
+    cursor.execute(theqry)
+    resultset = list(cursor)
+    if len(resultset) > 0 or uservalid:
+        # start writing the file
+        file = open('templates/store.html', 'w+', encoding="utf-8")
+        file.write('<!DOCTYPE html>\n<html>\n')
+        file.write('<head>\n<title>Store</title>\n')
+        file.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
+        file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
+        file.write('<body>\n')
+        file.write('<h1> Buy A Product </h1>\n<br>\n')
+        file.write('<p>Click <a href="logout">here</a> to return to home page.</p>\n')
+        file.write('<form action="" method="post">\n')
+        file.write('<input type="text" placeholder="ProductID" name="ProductID" value="{{')
+        file.write('request.form.ProductID }}">\n')
+        file.write('<input type="text" placeholder="Amount" name="Amount" value="{{')
+        file.write('request.form.Amount }}">\n')
+        file.write('<input class="btn btn-default" type="submit" value="Purchase">\n')
+        file.write('</form>\n')
+        file.write('{% if error %}\n')
+        file.write('  <p class="error"><strong>Error:</strong> {{ error }}\n')
+        file.write('{% endif %}\n')
+        file.write('{% for message in get_flashed_messages() %}\n')
+        file.write('  {{ message }}\n')
+        file.write('{% endfor %}\n')
+        file.write('<p>')
+        file.write('<table style=\"width:100%\">\n')
+        # write the table header
+        file.write('<tr>\n')
+        for heading in prod_header:
+            file.write('\t<th>' + heading + '</th>\n')
+        file.write('</tr>\n')
+        cursor.execute(theqry)
+        for row in cursor:
+            file.write('<tr>\n')
+            for item in row:
+                file.write('<td>' + str(item) + '</td>\n')
+            file.write('</tr>\n')
+        file.write('</table>\n')
+        file.write('</p>\n')
+        file.write('</body>\n')
+        return 0
+    return "error"
+
 
 #TODO: post additional query pages

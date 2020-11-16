@@ -112,5 +112,21 @@ def supplier():
     pw.writesup()
     return render_template("suppliers.html")
 
+@app.route('/store', methods=['GET', 'POST'])
+def store():
+    pw.writestorepage()
+    error = None
+    if request.method == 'POST':
+        erflag = pw.addtransaction(request.form['ProductID'], request.form['Amount'])
+        if erflag == "error2":
+            error = 'Amount must be at least $500.00'
+        if erflag == "error3":
+            error = "ProductID not valid"
+        else:
+            # flash('You were just logged in!')
+            return redirect(url_for('transaction'))
+    return render_template('store.html', error=error)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
