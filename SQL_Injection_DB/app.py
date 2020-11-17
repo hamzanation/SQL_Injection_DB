@@ -8,7 +8,10 @@ Purpose: create the application that the user can interact with
 """
 
 import pagewriter as pw
+import safewriter as sw
 from flask import Flask, render_template, redirect, url_for, request, session, flash
+
+writerflag = 0;
 
 # create the application
 app = Flask(__name__)
@@ -25,7 +28,10 @@ def home():
 def login():
     error = None
     if request.method == 'POST':
-        erflag = pw.writeuser(request.form['username'], request.form['password'])
+        if writerflag == 0:
+            erflag = pw.writeuser(request.form['username'], request.form['password'])
+        else:
+            erflag = sw.writeuser(request.form['username'], request.form['password'])
         if erflag == "error":
             error = 'Invalid Credentials. Please try again.'
         else:
@@ -39,7 +45,10 @@ def login():
 def emplogin():
     error = None
     if request.method == 'POST':
-        erflag = pw.writeemp(request.form['username'], request.form['password'])
+        if writerflag == 0:
+            erflag = pw.writeemp(request.form['username'], request.form['password'])
+        else:
+            erflag = sw.writeemp(request.form['username'], request.form['password'])
         if erflag == "error":
             error = 'Invalid Credentials. Please try again.'
         else:
@@ -53,7 +62,10 @@ def emplogin():
 def products():
     error = None
     if request.method == 'POST':
-        erflag = pw.writeprod(request.form['product'])
+        if writerflag == 0:
+            erflag = pw.writeprod(request.form['product'])
+        else:
+            erflag = sw.writeprod(request.form['product'])
         if erflag == "error":
             error = 'Invalid Credentials. Please try again.'
         else:
@@ -67,7 +79,10 @@ def products():
 def departments():
     error = None
     if request.method == 'POST':
-        erflag = pw.writedepart(request.form['department'])
+        if writerflag == 0:
+            erflag = pw.writedepart(request.form['department'])
+        else:
+            erflag = sw.writedepart(request.form['department'])
         if erflag == "error":
             error = 'Invalid Credentials. Please try again.'
         else:
@@ -104,20 +119,32 @@ def department():
 
 @app.route('/transaction')
 def transaction():
-    pw.writetrans()
+    if writerflag == 0:
+        pw.writetrans()
+    else:
+        sw.writetrans()
     return render_template("transactions.html")
 
 @app.route('/supplier')
 def supplier():
-    pw.writesup()
+    if writerflag == 0:
+        pw.writesup()
+    else:
+        sw.writesup()
     return render_template("suppliers.html")
 
 @app.route('/store', methods=['GET', 'POST'])
 def store():
-    pw.writestorepage()
+    if writerflag == 0:
+        pw.writestorepage()
+    else:
+        sw.writestorepage()
     error = None
     if request.method == 'POST':
-        erflag = pw.addtransaction(request.form['ProductID'], request.form['Amount'])
+        if writerflag == 0:
+            erflag = pw.addtransaction(request.form['ProductID'], request.form['Amount'])
+        else:
+            erflag = sw.addtransaction(request.form['ProductID'], request.form['Amount'])
         if erflag == "error2":
             error = 'Amount must be at least $500.00'
         if erflag == "error3":
@@ -126,6 +153,18 @@ def store():
             # flash('You were just logged in!')
             return redirect(url_for('transaction'))
     return render_template('store.html', error=error)
+
+@app.route('/safe')
+def safe():
+    global writerflag
+    writerflag = 1
+    return render_template('welcome.html')
+
+@app.route('/default')
+def default():
+    global writerflag
+    writerflag = 0
+    return render_template("welcome.html")
 
 
 if __name__ == '__main__':

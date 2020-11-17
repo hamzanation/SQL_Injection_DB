@@ -7,7 +7,7 @@
   </head>
 
   <header>
-    <image src="{{ url_for('static', filename='Website Icons.png')}}">
+    <image src="{{ url_for('static', filename='Website Icons.png')}}"/>
   </header>
 
   <body>
@@ -35,14 +35,26 @@
       </div>
     </div>
 
-    <h1>Interested in joining us? View our teams:</h1>
-    <br>
+
 
     <div class="department-grid-container">
       <div class = "department-grid-item">
         <p><a href="/departments">Departments</a></p>
       </div>
-    </div>    
+    </div>
+
+
+    <h1>Page viewing modes</h1>
+    <br>
+
+  <div class="write-mode-container">
+      <div class = "default-write-item">
+        <p><a href="/default">default page mode</a></p>
+      </div>
+      <div class = "safe-write-item">
+        <p><a href="/safe">safe page mode</a></p>
+      </div>
+  </div>
 
   </body>
 </html>
