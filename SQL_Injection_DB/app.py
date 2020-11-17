@@ -166,6 +166,22 @@ def default():
     writerflag = 0
     return render_template("welcome.html")
 
+@app.route('/deleteuser', methods=['GET', 'POST'])
+def deleteuser():
+    global writerflag
+    error = None
+    if request.method == 'POST':
+        if writerflag == 0:
+            erflag = pw.deletesuccess(request.form['Username'])
+        else:
+            erflag = sw.deletesuccess(request.form['Username'])
+        if erflag == "error":
+            error = 'Invalid username please try again'
+        else:
+            # flash('You were just logged in!')
+            return render_template("deletesuccess.html")
+    return render_template("UserDeleteSearch.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

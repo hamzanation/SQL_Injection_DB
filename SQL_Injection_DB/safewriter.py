@@ -86,9 +86,12 @@ def writeuser(username, password):
         file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
         file.write('<body>\n')
         file.write('<h1> Welcome ' + name + '</h1>\n<br>\n')
-        file.write('<p><a href="store">buy a product</a></p>\n')
-        file.write('<p><a href="transaction">view transactions</a></p>\n')
-        file.write('<p>Click <a href="logout">here</a> to go log out.</p>\n')
+        file.write('<tr>\n')
+        file.write('<td><p><a href="store">buy a product</a></p></td>\n')
+        file.write('<td><p><a href="transaction">view transactions</a></p></td>\n')
+        file.write('<td><p>Click <a href="logout">here</a> to go log out.</p></td>\n')
+        file.write('</tr>\n')
+        file.write('</table>\n')
         file.write('<p>')
         file.write('<table style=\"width:100%\">\n')
         # write the table header
@@ -148,8 +151,13 @@ def writeemp(username, password):
         file.write('<link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n</head>')
         file.write('<body>\n')
         file.write('<h1> Welcome ' + name + '</h1>\n<br>\n')
-        file.write('<p><a href="supplier">view suppliers</a></p>\n')
-        file.write('<p>Click <a href="logout">here</a> to go log out.</p>\n')
+        file.write('<table style=\"width:100%\">\n')
+        file.write('<tr>\n')
+        file.write('<td><p><a href="supplier">view suppliers</a></p></td>\n')
+        file.write('<td><p><a href="deleteuser">delete a user</a></p></td>\n')
+        file.write('<td><p>Click <a href="logout">here</a> to go log out.</p></td>\n')
+        file.write('</tr>\n')
+        file.write('</table>\n')
         file.write('<p>')
         file.write('<table style=\"width:100%\">\n')
         # write the table header
@@ -354,7 +362,7 @@ updateuserinfo = "UPDATE Users SET username = '%s', password = '%s' WHERE userna
 
 updateSalary = "UPDATE Employees SET salary = $%.2f WHERE id = %s;"
 
-deleteUser = "DELETE FROM Users WHERE username = %s"
+deleteUser = "DELETE FROM Users WHERE username = '%s'"
 
 deleteTrans = "DELETE FROM Transactions WHERE id = %d"
 
@@ -493,3 +501,24 @@ def writestorepage():
         file.write('</body>\n')
         return 0
     return "error"
+
+def deletesuccess(usrnm):
+    if not validateinput(usrnm):
+        return "error"
+    deleteuser(usrnm)
+    file = open('templates/deletesuccess.html', 'w+', encoding="utf-8")
+    file.write('<!DOCTYPE html>\n')
+    file.write('<html>\n')
+    file.write('  <head>\n')
+    file.write('    <title>Delete Success</title>\n')
+    file.write('    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n')
+    file.write('    <link href="static/bootstrap-reboot.css" rel="stylesheet" media="screen">\n')
+    file.write('  </head>\n')
+    file.write('  <header>\n')
+    file.write('    <image src="{{ url_for(\'static\', filename=\'Website Icons.png\')}}"/>\n')
+    file.write('  </header>\n')
+    file.write('  <body>\n')
+    file.write('    <h1>The User ' + usrnm +' was successfully deleted</h1>\n')
+    file.write('    <br>\n')
+    file.write('<p><a href="employeeportal">back to employee portal</a></p>\n')
+    return 0
