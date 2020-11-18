@@ -477,6 +477,3 @@ def deletesuccess(usrnm):
     file.write('    <br>\n')
     file.write('<p><a href="employeeportal">back to employee portal</a></p>\n')
     return 0
-
-
-#TODO: post additional query pages
